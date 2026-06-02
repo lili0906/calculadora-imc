@@ -13,8 +13,13 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun PantallaResultado(
     nombre: String,
-    imc: Float
+    imc: Float,
+    onVolver: () -> Unit
 ) {
+
+    val categoria: String
+    val color: Color
+
     when {
 
         imc < 18.5 -> {
@@ -38,12 +43,38 @@ fun PantallaResultado(
         }
     }
 
-    Text(
-        text = "Hola $nombre, tu resultado es: $imc"
-    )
-    Button(
-        onClick = onVolver
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Text("Volver")
+
+        Text(
+            text = "Hola $nombre, tu resultado es:"
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Text(
+            text = String.format("%.1f", imc),
+            fontSize = 40.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Text(
+            text = categoria,
+            color = color,
+            fontSize = 24.sp
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Button(
+            onClick = onVolver
+        ) {
+            Text("Volver")
+        }
     }
 }
