@@ -9,3 +9,24 @@ import androidx.navigation.navArgument
 import com.example.calculadoraimc.screens.PantallaIngreso
 import com.example.calculadoraimc.screens.PantallaResultado
 
+@Composable
+fun AppNavigation() {
+
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = "inicio"
+    ) {
+
+        composable("inicio") {
+
+        }
+
+        composable(
+            "resultado/{nombre}/{imc}"
+        ) {
+
+        }
+    }
+}
