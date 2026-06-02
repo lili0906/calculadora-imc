@@ -21,12 +21,39 @@ fun AppNavigation() {
 
         composable("inicio") {
 
+            PantallaIngreso { nombre, imc ->
+
+                navController.navigate(
+                    "resultado/$nombre/$imc"
+                )
+            }
         }
 
         composable(
-            "resultado/{nombre}/{imc}"
-        ) {
+            route = "resultado/{nombre}/{imc}",
+            arguments = listOf(
+                navArgument("nombre") {
+                    type = NavType.StringType
+                },
+                navArgument("imc") {
+                    type = NavType.FloatType
+                }
+            )
+        ) { backStackEntry ->
 
+            val nombre =
+                backStackEntry.arguments?.getString("nombre") ?: ""
+
+            val imc =
+                backStackEntry.arguments?.getFloat("imc") ?: 0f
+
+            PantallaResultado(
+                nombre = nombre,
+                imc = imc,
+                onVolver = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
