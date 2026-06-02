@@ -12,45 +12,100 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun PantallaIngreso() {
+fun PantallaIngreso(
+    onCalcular: (String, Float) -> Unit
+) {
+
+    var nombre by remember { mutableStateOf("") }
+    var peso by remember { mutableStateOf("") }
+    var altura by remember { mutableStateOf("") }
+
+    var error by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
 
-        Text("Calculadora IMC")
+        Text(
+            text = "Calculadora IMC",
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold
+        )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
-            label = { Text("Nombre") }
+            value = nombre,
+            onValueChange = { nombre = it },
+            label = { Text("Nombre del usuario") }
         )
 
         Spacer(modifier = Modifier.height(10.dp))
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
-            label = { Text("Peso") }
+            value = peso,
+            onValueChange = { peso = it },
+            label = { Text("Peso (kg)") }
         )
 
         Spacer(modifier = Modifier.height(10.dp))
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
-            label = { Text("Altura") }
+            value = altura,
+            onValueChange = { altura = it },
+            label = { Text("Altura (m)") }
         )
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Button(onClick = {}) {
-            Text("Calcular")
+
+        if (error) {
+            Text(
+                text = "Por favor, ingresa valores válidos",
+                color = Color.Red
+            )
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Row(
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Button(
+                onClick = {
+
+                    val pesoNum = peso.toFloatOrNull()
+                    val alturaNum = altura.toFloatOrNull()
+
+                    if (
+                        pesoNum != null &&
+                        alturaNum != null &&
+                        pesoNum > 0 &&
+                        alturaNum > 0
+                    ) {
+
+                        val imc =
+                            pesoNum / (alturaNum * alturaNum)
+
+                        error = false
+
+                        onCalcular(nombre, imc)
+
+                        nombre = ""
+                        peso = ""
+                        altura = ""
+
+                    } else {
+                        error = true
+                    }
+                }
+            ) {
+                Text("Calcular")
+            }
         }
     }
 }
